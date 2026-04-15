@@ -21,19 +21,84 @@
         }
 
         .navbar {
-            background-color: #e8623a !important;
+            background: rgba(232, 98, 58, 0.85) !important;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
             padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .navbar:hover {
+            background: rgba(232, 98, 58, 0.95) !important;
         }
 
         .navbar-brand {
-            font-weight: 700;
-            font-size: 1.5rem;
+            font-weight: 800;
+            font-size: 1.6rem;
             color: white !important;
+            letter-spacing: -0.5px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: transform 0.3s ease, text-shadow 0.3s ease;
         }
 
-        .btn-outline-light:hover {
-            background-color: white;
+        .navbar-brand:hover {
+            transform: scale(1.02);
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+        }
+
+        .navbar-brand .search-icon {
+            display: inline-block;
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .navbar-brand:hover .search-icon {
+            transform: rotate(15deg) scale(1.1);
+        }
+
+        .navbar-btn {
+            border-radius: 20px;
+            padding: 8px 20px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            border: 2px solid transparent;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .navbar-btn-outline {
+            color: white;
+            border-color: rgba(255, 255, 255, 0.6);
+            background: transparent;
+        }
+
+        .navbar-btn-outline:hover {
+            background: white;
             color: #e8623a;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            border-color: white;
+        }
+
+        .navbar-btn-solid {
+            background: white;
+            color: #e8623a !important;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .navbar-btn-solid:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 255, 255, 0.3);
+            background: #fdf8f4;
+            color: #d4562f !important;
         }
 
         .hero-section {
@@ -141,10 +206,20 @@
         }
 
         .hello-text {
-            color: white;
-            font-size: 0.85rem;
-            opacity: 0.9;
+            color: rgba(255, 255, 255, 0.95);
+            font-size: 0.9rem;
+            font-weight: 500;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 6px 14px;
+            border-radius: 20px;
+            backdrop-filter: blur(5px);
+            transition: background 0.3s ease, transform 0.2s ease;
             align-self: center;
+        }
+        
+        .hello-text:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: scale(1.02);
         }
 
         @media (max-width: 768px) {
@@ -165,18 +240,28 @@
 <body>
 <nav class="navbar navbar-expand-lg">
     <div class="container">
-        <a class="navbar-brand" href="/">🔍 Discoverly</a>
-        <div class="ms-auto d-flex gap-2 align-items-center flex-wrap">
+        <a class="navbar-brand" href="/">
+            <span class="search-icon">🔍</span> Discoverly
+        </a>
+        <div class="ms-auto d-flex gap-3 align-items-center flex-wrap">
             @auth
-                <span class="hello-text">Hello, {{ auth()->user()->name }} ({{ auth()->user()->role }})</span>
-                <a href="/dashboard" class="btn btn-outline-light btn-sm">Dashboard</a>
-                <form method="POST" action="/logout">
+                <a href="/profile" class="hello-text text-decoration-none d-flex align-items-center gap-2" title="View Profile">
+                    <div style="width: 28px; height: 28px; background-color: rgba(255,255,255,0.25); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                    </div>
+                    {{ auth()->user()->name }}
+                </a>
+                <a href="/dashboard" class="navbar-btn navbar-btn-outline">Dashboard</a>
+                <form method="POST" action="/logout" class="m-0">
                     @csrf
-                    <button class="btn btn-outline-light btn-sm">Logout</button>
+                    <button type="submit" class="navbar-btn navbar-btn-outline">Logout</button>
                 </form>
             @else
-                <a href="/login" class="btn btn-outline-light btn-sm">Login</a>
-                <a href="/register" class="btn btn-light btn-sm" style="color: #e8623a; font-weight: 600;">Register</a>
+                <a href="/login" class="navbar-btn navbar-btn-outline">Login</a>
+                <a href="/register" class="navbar-btn navbar-btn-solid">Register</a>
             @endauth
         </div>
     </div>
