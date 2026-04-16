@@ -4,17 +4,21 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Business extends Model
+class Artisan extends Model
 {
     protected $fillable = [
         'user_id',
         'name',
         'category',
-        'description',
-        'address',
+        'bio',
+        'town',
+        'county',
+        'email',
         'phone',
-        'opening_hours',
-        'image_path',
+        'website',
+        'cover_image',
+        'is_approved',
+        'avg_rating',
     ];
 
     public function user()
@@ -25,5 +29,10 @@ class Business extends Model
     public function reviews()
     {
         return $this->hasMany(Review::class);
+    }
+
+    public function workshops()
+    {
+        return $this->hasMany(Workshop::class);
     }
 }
