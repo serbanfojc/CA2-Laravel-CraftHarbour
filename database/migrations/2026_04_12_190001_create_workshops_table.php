@@ -8,20 +8,23 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('reviews', function (Blueprint $table) {
+        Schema::create('workshops', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->foreignId('artisan_id')->constrained()->onDelete('cascade');
-            $table->tinyInteger('rating');
             $table->string('title');
-            $table->text('body');
-            $table->boolean('is_flagged')->default(false);
+            $table->text('description');
+            $table->date('date');
+            $table->time('start_time');
+            $table->decimal('duration_hours', 3, 1);
+            $table->decimal('price', 8, 2);
+            $table->smallInteger('max_capacity');
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
         });
     }
 
     public function down(): void
     {
-        Schema::dropIfExists('reviews');
+        Schema::dropIfExists('workshops');
     }
 };
