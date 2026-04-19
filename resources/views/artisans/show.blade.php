@@ -33,6 +33,62 @@
                 @endforelse
             </div>
         </div>
+
+        @auth
+            @if(!auth()->user()->isArtisan())
+                <div class="card mb-4">
+                    <div class="card-body p-4">
+                        <h5 class="mb-3">Leave a Review</h5>
+
+                        @if(session('error'))
+                            <div class="alert alert-danger">{{ session('error') }}</div>
+                        @endif
+
+                        @if(session('success'))
+                            <div class="alert alert-success">{{ session('success') }}</div>
+                        @endif
+
+                        <form method="POST" action="/artisans/{{ $artisan->id }}/reviews">
+                            @csrf
+
+                            <div class="mb-3">
+                                <label class="form-label">Rating</label>
+                                <select name="rating" class="form-select">
+                                    <option value="">Select rating</option>
+                                    <option value="5">★★★★★ Excellent</option>
+                                    <option value="4">★★★★☆ Good</option>
+                                    <option value="3">★★★☆☆ Average</option>
+                                    <option value="2">★★☆☆☆ Poor</option>
+                                    <option value="1">★☆☆☆☆ Terrible</option>
+                                </select>
+                                @error('rating') <div class="text-danger small">{{ $message }}</div> @enderror
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Title</label>
+                                <input type="text" name="title" class="form-control" placeholder="Summarise your experience" value="{{ old('title') }}">
+                                @error('title') <div class="text-danger small">{{ $message }}</div> @enderror
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Review</label>
+                                <textarea name="body" class="form-control" rows="4" placeholder="Tell others about your experience">{{ old('body') }}</textarea>
+                                @error('body') <div class="text-danger small">{{ $message }}</div> @enderror
+                            </div>
+
+                            <button type="submit" class="btn btn-primary w-100">Submit Review</button>
+                        </form>
+                    </div>
+                </div>
+            @endif
+        @else
+            <div class="card mb-4">
+                <div class="card-body p-4 text-center">
+                    <p class="text-muted mb-2">Want to leave a review?</p>
+                    <a href="/login" class="btn btn-outline-primary">Log in to review</a>
+                </div>
+            </div>
+        @endauth
     </div>
 
     <div class="col-md-4">

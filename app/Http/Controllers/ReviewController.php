@@ -3,35 +3,38 @@
 namespace App\Http\Controllers;
 
 use App\Models\Review;
-use App\Models\Business;
+use App\Models\Artisan;
 use Illuminate\Http\Request;
 
 class ReviewController extends Controller
 {
-        public function store(Request $request, Business $business)
+        public function store(Request $request, $artisanId)
         {
-                $alreadyReviewed = Review::where('user_id', auth()->id())
-                                         ->where('business_id', $business->id)
-                                         ->exists();
+        $artisan = Artisan::findOrFail($artisanId);
 
-                if ($alreadyReviewed)
-                {
-                        return redirect('/businesses/' . $business->id)->with('error', 'You have already reviewed this business.');
-                }
+        $alreadyReviewed = Review::where('user_id', auth()->id())
+                                ->where('artisan_id', $artisan->id)
+                                ->exists();
 
-                $request->validate([
-                        'rating' => 'required|integer|min:1|max:5',
-                        'comment' => 'required',
-                ]);
+        if ($alreadyReviewed) {
+                return redirect('/artisans/' . $artisan->id)->with('error', 'You have already reviewed this artisan.');
+        }
 
-                Review::create([
-                        'user_id' => auth()->id(),
-                        'business_id' => $business->id,
-                        'rating' => $request->rating,
-                        'comment' => $request->comment,
-                ]);
+        $request->validate([
+                'rating' => 'required|integer|min:1|max:5',
+                'title' => 'required|string|max:255',
+                'body' => 'required|string',
+        ]);
 
-                return redirect('/businesses/' . $business->id);
+        Review::create([
+                'user_id' => auth()->id(),
+                'artisan_id' => $artisan->id,
+                'rating' => $request->rating,
+                'title' => $request->title,
+                'body' => $request->body,
+        ]);
+
+        return redirect('/artisans/' . $artisan->id)->with('success', 'Review added successfully!');
         }
 
         public function edit(Review $review)
