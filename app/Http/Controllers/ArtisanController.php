@@ -20,7 +20,7 @@ class ArtisanController extends Controller
             $query->where('category', $request->category);
         }
 
-        $artisans = $query->where('is_approved', true)->get();
+        $artisans = $query->where('is_approved', true)->paginate(6);
 
         return view('artisans.index', compact('artisans'));
     }

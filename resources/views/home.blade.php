@@ -1,33 +1,44 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="hero-section mx-n3 px-3 mb-5" style="margin-top: -24px;">
-    <div class="container text-center">
-        <h1>Find Local Artisans</h1>
-        <p class="lead mb-4">Discover and support the best craft makers in your community</p>
+<div class="hero-section mx-n3 px-3 mb-5" style="margin-top: -24px; position: relative; overflow: hidden;">
+    <div style="
+        position: absolute;
+        inset: 0;
+        background-image: url('{{ asset('images/home.png') }}');
+        background-size: cover;
+        background-position: center;
+        opacity: 0.25;
+        z-index: 0;
+    "></div>
+    <div style="position: relative; z-index: 1;">
+        <div class="container text-center">
+            <h1 class="mb-2">Find Local Artisans</h1>
+            <p class="lead mb-4">Discover and support the best craft makers in your community</p>
 
-        <form method="GET" action="/artisans" class="mx-auto" style="max-width: 700px;">
-            <div class="row g-2">
-                <div class="col-md-6">
-                    <input type="text" name="search" class="form-control form-control-lg" placeholder="Search artisans...">
+            <form method="GET" action="/artisans" class="mx-auto" style="max-width: 700px;">
+                <div class="row g-2">
+                    <div class="col-md-6">
+                        <input type="text" name="search" class="form-control form-control-lg" placeholder="Search artisans..." value="{{ request('search') }}">
+                    </div>
+                    <div class="col-md-4">
+                        <select name="category" class="form-select form-select-lg">
+                            <option value="">All Categories</option>
+                            <option value="ceramics" {{ request('category') == 'ceramics' ? 'selected' : '' }}>Ceramics</option>
+                            <option value="woodwork" {{ request('category') == 'woodwork' ? 'selected' : '' }}>Woodwork</option>
+                            <option value="jewellery" {{ request('category') == 'jewellery' ? 'selected' : '' }}>Jewellery</option>
+                            <option value="textiles" {{ request('category') == 'textiles' ? 'selected' : '' }}>Textiles</option>
+                            <option value="leather" {{ request('category') == 'leather' ? 'selected' : '' }}>Leather</option>
+                            <option value="glass" {{ request('category') == 'glass' ? 'selected' : '' }}>Glass</option>
+                            <option value="other" {{ request('category') == 'other' ? 'selected' : '' }}>Other</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <button type="submit" class="btn btn-light btn-lg w-100" style="color: #2D5016; font-weight: 600;">Search</button>
+                    </div>
                 </div>
-                <div class="col-md-4">
-                    <select name="category" class="form-select form-select-lg">
-                        <option value="">All Categories</option>
-                        <option value="ceramics">Ceramics</option>
-                        <option value="woodwork">Woodwork</option>
-                        <option value="jewellery">Jewellery</option>
-                        <option value="textiles">Textiles</option>
-                        <option value="leather">Leather</option>
-                        <option value="glass">Glass</option>
-                        <option value="other">Other</option>
-                    </select>
-                </div>
-                <div class="col-md-2">
-                    <button type="submit" class="btn btn-light btn-lg w-100" style="color: #e8623a; font-weight: 600;">Search</button>
-                </div>
-            </div>
-        </form>
+            </form>
+        </div>
     </div>
 </div>
 
@@ -44,10 +55,21 @@
     @forelse($artisans as $artisan)
         <div class="col-md-4 mb-4">
             <div class="card h-100">
+                @if($artisan->cover_image)
+                    <img src="{{ $artisan->cover_image }}" class="card-img-top" style="height: 200px; object-fit: cover; border-radius: 15px 15px 0 0;" alt="{{ $artisan->name }}">
+                @endif
                 <div class="card-body p-4">
                     <span class="badge bg-secondary mb-2">{{ $artisan->category }}</span>
-                    <h5 class="card-title fw-600">{{ $artisan->name }}</h5>
+                    <h5 class="card-title">{{ $artisan->name }}</h5>
                     <p class="card-text text-muted small">📍 {{ $artisan->town }}, {{ $artisan->county }}</p>
+                    @if($artisan->avg_rating)
+                        <p class="text-warning mb-1">
+                            @for($i = 1; $i <= 5; $i++)
+                                {{ $i <= $artisan->avg_rating ? '★' : '☆' }}
+                            @endfor
+                            <span class="text-muted small">({{ $artisan->avg_rating }})</span>
+                        </p>
+                    @endif
                     <p class="card-text">{{ Str::limit($artisan->bio, 100) }}</p>
                 </div>
                 <div class="card-footer p-3">
@@ -58,15 +80,36 @@
     @empty
         <div class="col">
             <div class="text-center py-5">
-                <h4 class="text-muted">No artisans listed yet</h4>
-                <p class="text-muted">Be the first to add your listing!</p>
-                @auth
-                    @if(auth()->user()->isArtisan())
-                        <a href="/artisans/create" class="btn btn-primary mt-2">Add Your Listing</a>
-                    @endif
-                @endauth
+                <h4 class="text-muted">No artisans found</h4>
+                <p class="text-muted">Try a different search or category</p>
             </div>
         </div>
     @endforelse
 </div>
+
+@if($artisans->hasPages())
+    <div class="d-flex justify-content-center align-items-center gap-2 mt-4 flex-wrap">
+        @if($artisans->onFirstPage())
+            <span class="btn btn-outline-secondary btn-sm disabled">« Previous</span>
+        @else
+            <a href="{{ $artisans->previousPageUrl() }}" class="btn btn-outline-primary btn-sm">« Previous</a>
+        @endif
+
+        @for($i = 1; $i <= $artisans->lastPage(); $i++)
+            @if($i == $artisans->currentPage())
+                <span class="btn btn-primary btn-sm">{{ $i }}</span>
+            @else
+                <a href="{{ $artisans->url($i) }}" class="btn btn-outline-primary btn-sm">{{ $i }}</a>
+            @endif
+        @endfor
+
+        @if($artisans->hasMorePages())
+            <a href="{{ $artisans->nextPageUrl() }}" class="btn btn-outline-primary btn-sm">Next »</a>
+        @else
+            <span class="btn btn-outline-secondary btn-sm disabled">Next »</span>
+        @endif
+    </div>
+    <p class="text-center text-muted small mt-2">Showing {{ $artisans->firstItem() }} to {{ $artisans->lastItem() }} of {{ $artisans->total() }} artisans</p>
+@endif
+
 @endsection

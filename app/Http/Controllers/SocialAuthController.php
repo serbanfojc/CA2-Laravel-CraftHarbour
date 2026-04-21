@@ -62,7 +62,7 @@ class SocialAuthController extends Controller
      */
     private function validateProvider(string $provider): void
     {
-        if (!in_array($provider, ['google', 'facebook'])) {
+        if (!in_array($provider, ['google'])) {
             abort(404, 'Social provider not supported.');
         }
     }

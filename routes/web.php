@@ -22,7 +22,7 @@ Route::get('/', function () {
         $query->where('category', request('category'));
     }
 
-    $artisans = $query->get();
+    $artisans = $query->paginate(6);
     return view('home', compact('artisans'));
 })->name('home');
 
@@ -34,6 +34,10 @@ Route::get('/profile', function () {
     return view('profile');
 })->middleware('auth')->name('profile');
 
+Route::get('/about', function () {
+    return view('about');
+})->name('about');
+
 Route::resource('artisans', ArtisanController::class);
 Route::resource('workshops', WorkshopController::class);
 
@@ -41,7 +45,7 @@ Route::post('/artisans/{artisan}/reviews', [ReviewController::class, 'store'])->
 Route::get('/reviews/{review}/edit', [ReviewController::class, 'edit'])->middleware('auth');
 Route::put('/reviews/{review}', [ReviewController::class, 'update'])->middleware('auth');
 Route::delete('/reviews/{review}', [ReviewController::class, 'destroy'])->middleware('auth');
-// Social Authentication Routes
+
 Route::get('/auth/{provider}/redirect', [SocialAuthController::class, 'redirect'])->name('social.redirect');
 Route::get('/auth/{provider}/callback', [SocialAuthController::class, 'callback'])->name('social.callback');
 

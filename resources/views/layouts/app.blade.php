@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Discoverly</title>
+    <title>CraftHarbour</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -21,7 +21,7 @@
         }
 
         .navbar {
-            background: rgba(232, 98, 58, 0.85) !important;
+            background: rgba(45, 80, 22, 0.90) !important;
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
             padding: 1rem 0;
@@ -33,7 +33,7 @@
         }
 
         .navbar:hover {
-            background: rgba(232, 98, 58, 0.95) !important;
+            background: rgba(45, 80, 22, 0.98) !important;
         }
 
         .navbar-brand {
@@ -52,13 +52,26 @@
             text-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
         }
 
-        .navbar-brand .search-icon {
+        .navbar-brand .brand-icon {
             display: inline-block;
             transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
-        .navbar-brand:hover .search-icon {
+        .navbar-brand:hover .brand-icon {
             transform: rotate(15deg) scale(1.1);
+        }
+
+        .nav-link-plain {
+            color: rgba(255,255,255,0.85) !important;
+            font-weight: 500;
+            font-size: 0.9rem;
+            text-decoration: none;
+            padding: 6px 4px;
+            transition: color 0.2s ease;
+        }
+
+        .nav-link-plain:hover {
+            color: white !important;
         }
 
         .navbar-btn {
@@ -67,8 +80,6 @@
             font-weight: 600;
             letter-spacing: 0.5px;
             transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
             border: 2px solid transparent;
             text-decoration: none;
             display: inline-block;
@@ -82,7 +93,7 @@
 
         .navbar-btn-outline:hover {
             background: white;
-            color: #e8623a;
+            color: #2D5016;
             transform: translateY(-2px);
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
             border-color: white;
@@ -90,7 +101,7 @@
 
         .navbar-btn-solid {
             background: white;
-            color: #e8623a !important;
+            color: #2D5016 !important;
             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
 
@@ -98,11 +109,11 @@
             transform: translateY(-2px);
             box-shadow: 0 6px 20px rgba(255, 255, 255, 0.3);
             background: #fdf8f4;
-            color: #d4562f !important;
+            color: #1a3009 !important;
         }
 
         .hero-section {
-            background: linear-gradient(135deg, #e8623a, #f5a067);
+            background: linear-gradient(135deg, #2D5016, #7CB342);
             color: white;
             padding: 60px 0;
             margin-bottom: 40px;
@@ -127,7 +138,7 @@
         }
 
         .badge.bg-secondary {
-            background-color: #f5a067 !important;
+            background-color: #7CB342 !important;
             color: white;
             font-weight: 500;
             padding: 5px 10px;
@@ -135,26 +146,26 @@
         }
 
         .btn-primary {
-            background-color: #e8623a;
-            border-color: #e8623a;
+            background-color: #2D5016;
+            border-color: #2D5016;
             border-radius: 8px;
             font-weight: 500;
         }
 
         .btn-primary:hover {
-            background-color: #d4562f;
-            border-color: #d4562f;
+            background-color: #1a3009;
+            border-color: #1a3009;
         }
 
         .btn-outline-primary {
-            color: #e8623a;
-            border-color: #e8623a;
+            color: #2D5016;
+            border-color: #2D5016;
             border-radius: 8px;
         }
 
         .btn-outline-primary:hover {
-            background-color: #e8623a;
-            border-color: #e8623a;
+            background-color: #2D5016;
+            border-color: #2D5016;
             color: white;
         }
 
@@ -165,8 +176,8 @@
         }
 
         .form-control:focus, .form-select:focus {
-            border-color: #e8623a;
-            box-shadow: 0 0 0 0.2rem rgba(232, 98, 58, 0.15);
+            border-color: #2D5016;
+            box-shadow: 0 0 0 0.2rem rgba(45, 80, 22, 0.15);
         }
 
         .page-title {
@@ -177,12 +188,12 @@
 
         .card-footer {
             background-color: transparent;
-            border-top: 1px solid #f0e8e0;
+            border-top: 1px solid #e8f5e9;
         }
 
         .list-group-item {
             border: none;
-            border-bottom: 1px solid #f0e8e0;
+            border-bottom: 1px solid #e8f5e9;
             padding: 12px 0;
         }
 
@@ -199,8 +210,8 @@
         }
 
         footer {
-            background-color: #333;
-            color: #aaa;
+            background-color: #2D5016;
+            color: #a5d6a7;
             padding: 20px 0;
             margin-top: auto;
         }
@@ -216,7 +227,7 @@
             transition: background 0.3s ease, transform 0.2s ease;
             align-self: center;
         }
-        
+
         .hello-text:hover {
             background: rgba(255, 255, 255, 0.25);
             transform: scale(1.02);
@@ -241,9 +252,12 @@
 <nav class="navbar navbar-expand-lg">
     <div class="container">
         <a class="navbar-brand" href="/">
-            <span class="search-icon">🔍</span> Discoverly
+            <span class="brand-icon">🏺</span> CraftHarbour
         </a>
         <div class="ms-auto d-flex gap-3 align-items-center flex-wrap">
+            <a href="/artisans" class="nav-link-plain">Artisans</a>
+            <a href="/workshops" class="nav-link-plain">Workshops</a>
+            <a href="/about" class="nav-link-plain">About</a>
             @auth
                 <a href="/profile" class="hello-text text-decoration-none d-flex align-items-center gap-2" title="View Profile">
                     <div style="width: 28px; height: 28px; background-color: rgba(255,255,255,0.25); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
@@ -255,7 +269,7 @@
                     {{ auth()->user()->name }}
                 </a>
                 @if(auth()->user()->isAdmin())
-                    <a href="/admin" class="navbar-btn navbar-btn-solid" style="font-size: 0.85rem;">🛡️ Admin Panel</a>
+                    <a href="/admin" class="navbar-btn navbar-btn-solid" style="font-size: 0.85rem; color: #2D5016 !important; text-decoration: none;">Admin</a>
                 @endif
                 <a href="/dashboard" class="navbar-btn navbar-btn-outline">Dashboard</a>
                 <form method="POST" action="/logout" class="m-0">
@@ -273,10 +287,16 @@
 <main>
     <div class="container mt-4">
         @if(session('success'))
-            <div class="alert alert-success">{{ session('success') }}</div>
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ session('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
         @endif
         @if(session('error'))
-            <div class="alert alert-danger">{{ session('error') }}</div>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                {{ session('error') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
         @endif
         @yield('content')
     </div>
@@ -284,7 +304,8 @@
 
 <footer>
     <div class="container text-center">
-        <p class="mb-0">🔍 Discoverly — Discover your community</p>
+        <p class="mb-1 fw-600">🏺 CraftHarbour</p>
+        <p class="mb-0" style="font-size: 0.85rem;">Discover and support local artisans in your community</p>
     </div>
 </footer>
 
