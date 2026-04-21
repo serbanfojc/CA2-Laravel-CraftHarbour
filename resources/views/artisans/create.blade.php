@@ -7,7 +7,7 @@
             <div class="card-body p-4">
                 <h4 class="mb-4">Add Your Listing</h4>
 
-                <form method="POST" action="/artisans">
+                <form method="POST" action="/artisans" enctype="multipart/form-data">
                     @csrf
 
                     <div class="mb-3">
@@ -66,6 +66,13 @@
                         <label class="form-label">Website (optional)</label>
                         <input type="text" name="website" class="form-control" value="{{ old('website') }}">
                         @error('website') <div class="text-danger small">{{ $message }}</div> @enderror
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Cover Image (optional)</label>
+                        <input type="file" name="cover_image" class="form-control" accept="image/*">
+                        <div class="form-text">Max file size 2MB. JPG, PNG or WebP.</div>
+                        @error('cover_image') <div class="text-danger small">{{ $message }}</div> @enderror
                     </div>
 
                     <button type="submit" class="btn btn-primary w-100">Create Listing</button>

@@ -7,7 +7,7 @@
             <div class="card-body p-4">
                 <h4 class="mb-4">Edit Your Listing</h4>
 
-                <form method="POST" action="/artisans/{{ $artisan->id }}">
+                <form method="POST" action="/artisans/{{ $artisan->id }}" enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
 
@@ -67,6 +67,19 @@
                         <label class="form-label">Website (optional)</label>
                         <input type="text" name="website" class="form-control" value="{{ old('website', $artisan->website) }}">
                         @error('website') <div class="text-danger small">{{ $message }}</div> @enderror
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Cover Image</label>
+                        @if($artisan->cover_image)
+                            <div class="mb-2">
+                                <img src="{{ $artisan->cover_image }}" style="height: 120px; object-fit: cover; border-radius: 8px;" alt="Current image">
+                                <p class="text-muted small mt-1">Current image — upload a new one to replace it</p>
+                            </div>
+                        @endif
+                        <input type="file" name="cover_image" class="form-control" accept="image/*">
+                        <div class="form-text">Max file size 2MB. JPG, PNG or WebP.</div>
+                        @error('cover_image') <div class="text-danger small">{{ $message }}</div> @enderror
                     </div>
 
                     <div class="d-flex gap-2">

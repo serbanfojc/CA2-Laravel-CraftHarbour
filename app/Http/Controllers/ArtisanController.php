@@ -47,6 +47,7 @@ class ArtisanController extends Controller
             'email' => 'nullable|email',
             'phone' => 'nullable|string|max:20',
             'website' => 'nullable|url',
+            'cover_image' => 'nullable|image|max:2048',
         ]);
 
         $artisan = new Artisan();
@@ -59,6 +60,12 @@ class ArtisanController extends Controller
         $artisan->email = $request->email;
         $artisan->phone = $request->phone;
         $artisan->website = $request->website;
+
+        if ($request->hasFile('cover_image')) {
+            $path = $request->file('cover_image')->store('artisans', 'public');
+            $artisan->cover_image = asset('storage/' . $path);
+        }
+
         $artisan->save();
 
         return redirect('/artisans/' . $artisan->id)->with('success', 'Listing created successfully!');
@@ -92,6 +99,7 @@ class ArtisanController extends Controller
             'email' => 'nullable|email',
             'phone' => 'nullable|string|max:20',
             'website' => 'nullable|url',
+            'cover_image' => 'nullable|image|max:2048',
         ]);
 
         $artisan->name = $request->name;
@@ -102,6 +110,12 @@ class ArtisanController extends Controller
         $artisan->email = $request->email;
         $artisan->phone = $request->phone;
         $artisan->website = $request->website;
+
+        if ($request->hasFile('cover_image')) {
+            $path = $request->file('cover_image')->store('artisans', 'public');
+            $artisan->cover_image = asset('storage/' . $path);
+        }
+
         $artisan->save();
 
         return redirect('/artisans/' . $artisan->id)->with('success', 'Listing updated successfully!');
