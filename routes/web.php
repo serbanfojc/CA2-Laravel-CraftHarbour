@@ -5,6 +5,7 @@ use App\Http\Controllers\ArtisanController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\WorkshopController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\SocialAuthController;
 
 Route::get('/', function () {
     $query = \App\Models\Artisan::where('is_approved', true);
@@ -40,6 +41,9 @@ Route::post('/artisans/{artisan}/reviews', [ReviewController::class, 'store'])->
 Route::get('/reviews/{review}/edit', [ReviewController::class, 'edit'])->middleware('auth');
 Route::put('/reviews/{review}', [ReviewController::class, 'update'])->middleware('auth');
 Route::delete('/reviews/{review}', [ReviewController::class, 'destroy'])->middleware('auth');
+// Social Authentication Routes
+Route::get('/auth/{provider}/redirect', [SocialAuthController::class, 'redirect'])->name('social.redirect');
+Route::get('/auth/{provider}/callback', [SocialAuthController::class, 'callback'])->name('social.callback');
 
 Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::get('/', [AdminController::class, 'index']);
