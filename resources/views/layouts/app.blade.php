@@ -254,6 +254,9 @@
                     </div>
                     {{ auth()->user()->name }}
                 </a>
+                @if(auth()->user()->isAdmin())
+                    <a href="/admin" class="navbar-btn navbar-btn-solid" style="font-size: 0.85rem;">🛡️ Admin Panel</a>
+                @endif
                 <a href="/dashboard" class="navbar-btn navbar-btn-outline">Dashboard</a>
                 <form method="POST" action="/logout" class="m-0">
                     @csrf

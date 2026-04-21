@@ -41,7 +41,7 @@ Route::get('/reviews/{review}/edit', [ReviewController::class, 'edit'])->middlew
 Route::put('/reviews/{review}', [ReviewController::class, 'update'])->middleware('auth');
 Route::delete('/reviews/{review}', [ReviewController::class, 'destroy'])->middleware('auth');
 
-Route::middleware(['auth'])->prefix('admin')->group(function () {
+Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::get('/', [AdminController::class, 'index']);
     Route::post('/artisans/{id}/toggle', [AdminController::class, 'toggleApproval']);
     Route::post('/reviews/{id}/delete', [AdminController::class, 'deleteReview']);
