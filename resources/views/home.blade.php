@@ -42,6 +42,33 @@
     </div>
 </div>
 
+@if(isset($artisanOfTheWeek))
+<div class="card mb-5" style="border-left: 5px solid #2D5016; background: linear-gradient(135deg, #f8fdf4, #ffffff);">
+    <div class="card-body p-4">
+        <div class="row align-items-center">
+            <div class="col-md-2 text-center mb-3 mb-md-0">
+                <div style="font-size: 3rem;">🏆</div>
+                <span class="badge bg-secondary" style="background-color: #2D5016 !important;">Artisan of the Week</span>
+            </div>
+            <div class="col-md-7">
+                <h5 class="mb-1">{{ $artisanOfTheWeek->name }}</h5>
+                <p class="text-muted small mb-1">📍 {{ $artisanOfTheWeek->town }}, {{ $artisanOfTheWeek->county }} · {{ ucfirst($artisanOfTheWeek->category) }}</p>
+                <p class="text-warning mb-1">
+                    @for($i = 1; $i <= 5; $i++)
+                        {{ $i <= $artisanOfTheWeek->avg_rating ? '★' : '☆' }}
+                    @endfor
+                    <span class="text-muted small">({{ $artisanOfTheWeek->avg_rating }} avg rating)</span>
+                </p>
+                <p class="mb-0">{{ Str::limit($artisanOfTheWeek->bio, 150) }}</p>
+            </div>
+            <div class="col-md-3 text-md-end mt-3 mt-md-0">
+                <a href="/artisans/{{ $artisanOfTheWeek->id }}" class="btn btn-primary">View Profile</a>
+            </div>
+        </div>
+    </div>
+</div>
+@endif
+
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h4 class="page-title mb-0">Latest Artisans</h4>
     @auth

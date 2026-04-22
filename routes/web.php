@@ -23,7 +23,13 @@ Route::get('/', function () {
     }
 
     $artisans = $query->paginate(6);
-    return view('home', compact('artisans'));
+
+    $artisanOfTheWeek = \App\Models\Artisan::where('is_approved', true)
+        ->whereNotNull('avg_rating')
+        ->orderBy('avg_rating', 'desc')
+        ->first();
+
+    return view('home', compact('artisans', 'artisanOfTheWeek'));
 })->name('home');
 
 Route::get('/dashboard', function () {
