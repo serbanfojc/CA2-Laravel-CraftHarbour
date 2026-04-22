@@ -9,20 +9,49 @@ class ArtisanController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Artisan::query();
+        $query = Artisan::where('is_approved', true);
 
         if ($request->search) {
-            $query->where('name', 'like', '%' . $request->search . '%')
-                  ->orWhere('category', 'like', '%' . $request->search . '%');
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('name', 'like', '%' . $search . '%')
+                  ->orWhere('bio', 'like', '%' . $search . '%')
+                  ->orWhere('town', 'like', '%' . $search . '%')
+                  ->orWhere('county', 'like', '%' . $search . '%');
+            });
         }
 
         if ($request->category) {
             $query->where('category', $request->category);
         }
 
-        $artisans = $query->where('is_approved', true)->paginate(6);
+        if ($request->county) {
+            $query->where('county', $request->county);
+        }
 
-        return view('artisans.index', compact('artisans'));
+        $sort = $request->sort ?? 'name_asc';
+        switch ($sort) {
+            case 'name_desc':
+                $query->orderBy('name', 'desc');
+                break;
+            case 'rating_desc':
+                $query->orderBy('avg_rating', 'desc');
+                break;
+            case 'rating_asc':
+                $query->orderBy('avg_rating', 'asc');
+                break;
+            case 'newest':
+                $query->orderBy('created_at', 'desc');
+                break;
+            default:
+                $query->orderBy('name', 'asc');
+        }
+
+        $artisans = $query->paginate(9)->appends($request->query());
+
+        $counties = Artisan::where('is_approved', true)->select('county')->distinct()->orderBy('county')->pluck('county');
+
+        return view('artisans.index', compact('artisans', 'counties'));
     }
 
     public function show($id)

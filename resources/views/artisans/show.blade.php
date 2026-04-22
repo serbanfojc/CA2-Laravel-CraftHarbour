@@ -1,14 +1,37 @@
 @extends('layouts.app')
 
 @section('content')
+    @if($artisan->cover_image)
+        <div class="mb-4 rounded-4 shadow-sm" style="margin-top: -10px; position: relative; overflow: hidden; height: 350px; display: flex; align-items: flex-end;">
+            <div style="
+                position: absolute;
+                inset: 0;
+                background-image: url('{{ $artisan->cover_image }}');
+                background-size: cover;
+                background-position: center;
+                z-index: 0;
+            "></div>
+            <div style="position: absolute; inset: 0; background: linear-gradient(to top, rgba(26, 58, 32, 0.9) 0%, rgba(26, 58, 32, 0.4) 50%, rgba(26, 58, 32, 0) 100%); z-index: 1;"></div>
+            
+            <div style="position: relative; z-index: 2; width: 100%; padding: 2.5rem;">
+                <span class="badge mb-2" style="background: rgba(255,255,255,0.2); backdrop-filter: blur(5px); color: white; border: 1px solid rgba(255,255,255,0.3);">{{ ucfirst($artisan->category) }}</span>
+                <h1 class="text-white mb-2" style="font-weight: 700; text-shadow: 0 2px 10px rgba(0,0,0,0.3);">{{ $artisan->name }}</h1>
+                <p class="text-light mb-0" style="font-size: 1.1rem; text-shadow: 0 2px 10px rgba(0,0,0,0.3);">📍 {{ $artisan->town }}, {{ $artisan->county }}</p>
+            </div>
+        </div>
+    @endif
+
     <div class="row">
         <div class="col-md-8">
             <div class="card mb-4">
                 <div class="card-body p-4">
-                    <span class="badge bg-secondary mb-2">{{ $artisan->category }}</span>
-                    <h2>{{ $artisan->name }}</h2>
-                    <p class="text-muted">📍 {{ $artisan->town }}, {{ $artisan->county }}</p>
-                    <p>{{ $artisan->bio }}</p>
+                    @if(!$artisan->cover_image)
+                        <span class="badge bg-secondary mb-2">{{ ucfirst($artisan->category) }}</span>
+                        <h2 class="mb-2" style="font-weight: 700;">{{ $artisan->name }}</h2>
+                        <p class="text-muted mb-4">📍 {{ $artisan->town }}, {{ $artisan->county }}</p>
+                    @endif
+                    <h5 class="mb-3" style="color: #1A3A20; font-weight: 600;">About</h5>
+                    <p style="white-space: pre-line; line-height: 1.8; color: #444;">{{ $artisan->bio }}</p>
                 </div>
             </div>
 

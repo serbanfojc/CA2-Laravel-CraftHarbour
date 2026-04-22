@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="d-flex justify-content-between align-items-center mb-4">
-    <h4 class="mb-0">All Artisans</h4>
+    <h4 class="page-title mb-0">All Artisans</h4>
     @auth
         @if(auth()->user()->isArtisan())
             <a href="/artisans/create" class="btn btn-primary">+ Add Your Listing</a>
@@ -10,15 +10,67 @@
     @endauth
 </div>
 
+{{-- Search, Filter & Sort Bar --}}
+<div class="card mb-4" style="border: none; background: #f5f5f0; border-radius: 16px;">
+    <div class="card-body p-4">
+        <form method="GET" action="/artisans" id="artisan-filter-form">
+            <div class="row g-3 align-items-end">
+                <div class="col-md-4">
+                    <label class="form-label fw-semibold small text-muted mb-1">🔍 Search</label>
+                    <input type="text" name="search" class="form-control" placeholder="Search by name, location..." value="{{ request('search') }}">
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label fw-semibold small text-muted mb-1">📂 Category</label>
+                    <select name="category" class="form-select">
+                        <option value="">All Categories</option>
+                        <option value="ceramics" {{ request('category') == 'ceramics' ? 'selected' : '' }}>Ceramics</option>
+                        <option value="woodwork" {{ request('category') == 'woodwork' ? 'selected' : '' }}>Woodwork</option>
+                        <option value="jewellery" {{ request('category') == 'jewellery' ? 'selected' : '' }}>Jewellery</option>
+                        <option value="textiles" {{ request('category') == 'textiles' ? 'selected' : '' }}>Textiles</option>
+                        <option value="leather" {{ request('category') == 'leather' ? 'selected' : '' }}>Leather</option>
+                        <option value="glass" {{ request('category') == 'glass' ? 'selected' : '' }}>Glass</option>
+                        <option value="other" {{ request('category') == 'other' ? 'selected' : '' }}>Other</option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label fw-semibold small text-muted mb-1">📍 County</label>
+                    <select name="county" class="form-select">
+                        <option value="">All Counties</option>
+                        @foreach($counties as $county)
+                            <option value="{{ $county }}" {{ request('county') == $county ? 'selected' : '' }}>{{ $county }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label fw-semibold small text-muted mb-1">↕️ Sort By</label>
+                    <select name="sort" class="form-select">
+                        <option value="name_asc" {{ request('sort', 'name_asc') == 'name_asc' ? 'selected' : '' }}>Name A–Z</option>
+                        <option value="name_desc" {{ request('sort') == 'name_desc' ? 'selected' : '' }}>Name Z–A</option>
+                        <option value="rating_desc" {{ request('sort') == 'rating_desc' ? 'selected' : '' }}>Highest Rated</option>
+                        <option value="rating_asc" {{ request('sort') == 'rating_asc' ? 'selected' : '' }}>Lowest Rated</option>
+                        <option value="newest" {{ request('sort') == 'newest' ? 'selected' : '' }}>Newest First</option>
+                    </select>
+                </div>
+                <div class="col-md-2 d-flex gap-2">
+                    <button type="submit" class="btn btn-primary w-100">Filter</button>
+                    <a href="/artisans" class="btn btn-outline-primary" title="Clear filters">✕</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<p class="text-muted small mb-3">Showing {{ $artisans->total() }} artisan{{ $artisans->total() !== 1 ? 's' : '' }}</p>
+
 <div class="row">
     @forelse($artisans as $artisan)
         <div class="col-md-4 mb-4">
             <div class="card h-100">
                 @if($artisan->cover_image)
-                    <img src="{{ $artisan->cover_image }}" class="card-img-top" style="height: 200px; object-fit: cover; border-radius: 15px 15px 0 0;" alt="{{ $artisan->name }}">
+                    <img src="{{ $artisan->cover_image }}" class="card-img-top" style="height: 200px; object-fit: cover; border-radius: 20px 20px 0 0;" alt="{{ $artisan->name }}">
                 @endif
                 <div class="card-body p-4">
-                    <span class="badge bg-secondary mb-2">{{ $artisan->category }}</span>
+                    <span class="badge bg-secondary mb-2">{{ ucfirst($artisan->category) }}</span>
                     <h5 class="card-title">{{ $artisan->name }}</h5>
                     <p class="card-text text-muted small">📍 {{ $artisan->town }}, {{ $artisan->county }}</p>
                     @if($artisan->avg_rating)
@@ -41,6 +93,7 @@
             <div class="text-center py-5">
                 <h4 class="text-muted">No artisans found</h4>
                 <p class="text-muted">Try a different search or category</p>
+                <a href="/artisans" class="btn btn-outline-primary mt-2">Clear Filters</a>
             </div>
         </div>
     @endforelse

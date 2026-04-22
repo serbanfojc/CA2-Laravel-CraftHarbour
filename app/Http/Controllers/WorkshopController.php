@@ -7,10 +7,52 @@ use App\Models\Workshop;
 
 class WorkshopController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $workshops = Workshop::where('is_active', true)->orderBy('date')->get();
-        return view('workshops.index', compact('workshops'));
+        $query = Workshop::where('is_active', true)->with('artisan');
+
+        if ($request->search) {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('title', 'like', '%' . $search . '%')
+                  ->orWhere('description', 'like', '%' . $search . '%')
+                  ->orWhereHas('artisan', function($aq) use ($search) {
+                      $aq->where('name', 'like', '%' . $search . '%');
+                  });
+            });
+        }
+
+        if ($request->price_max) {
+            $query->where('price', '<=', $request->price_max);
+        }
+
+        if ($request->artisan_id) {
+            $query->where('artisan_id', $request->artisan_id);
+        }
+
+        $sort = $request->sort ?? 'date_asc';
+        switch ($sort) {
+            case 'date_desc':
+                $query->orderBy('date', 'desc');
+                break;
+            case 'price_asc':
+                $query->orderBy('price', 'asc');
+                break;
+            case 'price_desc':
+                $query->orderBy('price', 'desc');
+                break;
+            case 'duration_asc':
+                $query->orderBy('duration_hours', 'asc');
+                break;
+            default:
+                $query->orderBy('date', 'asc');
+        }
+
+        $workshops = $query->paginate(10)->appends($request->query());
+
+        $artisans = \App\Models\Artisan::where('is_approved', true)->orderBy('name')->pluck('name', 'id');
+
+        return view('workshops.index', compact('workshops', 'artisans'));
     }
 
     public function create()

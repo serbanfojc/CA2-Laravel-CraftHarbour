@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -62,7 +63,7 @@
         }
 
         .nav-link-plain {
-            color: rgba(255,255,255,0.85) !important;
+            color: rgba(255, 255, 255, 0.85) !important;
             font-weight: 500;
             font-size: 0.9rem;
             text-decoration: none;
@@ -102,7 +103,7 @@
         .navbar-btn-solid {
             background: white;
             color: #2D5016 !important;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
         }
 
         .navbar-btn-solid:hover {
@@ -128,13 +129,13 @@
         .card {
             border: none;
             border-radius: 15px;
-            box-shadow: 0 2px 15px rgba(0,0,0,0.08);
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08);
             transition: transform 0.2s, box-shadow 0.2s;
         }
 
         .card:hover {
             transform: translateY(-4px);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
         }
 
         .badge.bg-secondary {
@@ -169,13 +170,15 @@
             color: white;
         }
 
-        .form-control, .form-select {
+        .form-control,
+        .form-select {
             border-radius: 8px;
             border: 1px solid #ddd;
             padding: 10px 15px;
         }
 
-        .form-control:focus, .form-select:focus {
+        .form-control:focus,
+        .form-select:focus {
             border-color: #2D5016;
             box-shadow: 0 0 0 0.2rem rgba(45, 80, 22, 0.15);
         }
@@ -248,67 +251,78 @@
         }
     </style>
 </head>
+
 <body>
-<nav class="navbar navbar-expand-lg">
-    <div class="container">
-        <a class="navbar-brand" href="/">
-            <span class="brand-icon">🏺</span> CraftHarbour
-        </a>
-        <div class="ms-auto d-flex gap-3 align-items-center flex-wrap">
-            <a href="/artisans" class="nav-link-plain">Artisans</a>
-            <a href="/workshops" class="nav-link-plain">Workshops</a>
-            <a href="/about" class="nav-link-plain">About</a>
-            @auth
-                <a href="/profile" class="hello-text text-decoration-none d-flex align-items-center gap-2" title="View Profile">
-                    <div style="width: 28px; height: 28px; background-color: rgba(255,255,255,0.25); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                            <circle cx="12" cy="7" r="4"></circle>
-                        </svg>
-                    </div>
-                    {{ auth()->user()->name }}
-                </a>
-                @if(auth()->user()->isAdmin())
-                    <a href="/admin" class="navbar-btn navbar-btn-solid" style="font-size: 0.85rem; color: #2D5016 !important; text-decoration: none;">Admin</a>
-                @endif
-                <a href="/dashboard" class="navbar-btn navbar-btn-outline">Dashboard</a>
-                <form method="POST" action="/logout" class="m-0">
-                    @csrf
-                    <button type="submit" class="navbar-btn navbar-btn-outline">Logout</button>
-                </form>
-            @else
-                <a href="/login" class="navbar-btn navbar-btn-outline">Login</a>
-                <a href="/register" class="navbar-btn navbar-btn-solid">Register</a>
-            @endauth
+    <nav class="navbar navbar-expand-lg">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <span class="brand-icon">🏺</span> CraftHarbour
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation" style="border-color: rgba(255,255,255,0.3);">
+                <span class="navbar-toggler-icon" style="background-image: url(&quot;data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 0.9%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e&quot;);"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarContent">
+                <div class="ms-auto d-flex gap-3 align-items-center flex-column flex-lg-row mt-3 mt-lg-0">
+                    <a href="/artisans" class="nav-link-plain">Artisans</a>
+                    <a href="/workshops" class="nav-link-plain">Workshops</a>
+                    <a href="/about" class="nav-link-plain">About</a>
+                    @auth
+                        <a href="/profile" class="hello-text text-decoration-none d-flex align-items-center gap-2"
+                            title="View Profile">
+                            <div
+                                style="width: 28px; height: 28px; background-color: rgba(255,255,255,0.25); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                    <circle cx="12" cy="7" r="4"></circle>
+                                </svg>
+                            </div>
+                            {{ auth()->user()->name }}
+                        </a>
+                        @if(auth()->user()->isAdmin())
+                            <a href="/admin" class="navbar-btn navbar-btn-solid"
+                                style="font-size: 0.85rem; color: #2D5016 !important; text-decoration: none;">Admin</a>
+                        @endif
+                        <a href="/dashboard" class="navbar-btn navbar-btn-outline">Dashboard</a>
+                        <form method="POST" action="/logout" class="m-0">
+                            @csrf
+                            <button type="submit" class="navbar-btn navbar-btn-outline w-100">Logout</button>
+                        </form>
+                    @else
+                        <a href="/login" class="navbar-btn navbar-btn-outline">Login</a>
+                        <a href="/register" class="navbar-btn navbar-btn-solid">Register</a>
+                    @endauth
+                </div>
+            </div>
         </div>
-    </div>
-</nav>
+    </nav>
 
-<main>
-    <div class="container mt-4">
-        @if(session('success'))
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                {{ session('success') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-            </div>
-        @endif
-        @if(session('error'))
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                {{ session('error') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-            </div>
-        @endif
-        @yield('content')
-    </div>
-</main>
+    <main>
+        <div class="container mt-4">
+            @if(session('success'))
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    {{ session('success') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            @endif
+            @if(session('error'))
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    {{ session('error') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            @endif
+            @yield('content')
+        </div>
+    </main>
 
-<footer>
-    <div class="container text-center">
-        <p class="mb-1 fw-600">🏺 CraftHarbour</p>
-        <p class="mb-0" style="font-size: 0.85rem;">Discover and support local artisans in your community</p>
-    </div>
-</footer>
+    <footer>
+        <div class="container text-center">
+            <p class="mb-1 fw-600">🏺 CraftHarbour</p>
+            <p class="mb-0" style="font-size: 0.85rem;">Discover and support local artisans in your community</p>
+        </div>
+    </footer>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>
