@@ -33,11 +33,19 @@ class ArtisanController extends Controller
 
     public function create()
     {
+        if (!auth()->check() || !auth()->user()->isArtisan()) {
+            return redirect('/artisans')->with('error', 'You must be an artisan to create a listing.');
+        }
+
         return view('artisans.create');
     }
 
     public function store(Request $request)
     {
+        if (!auth()->check() || !auth()->user()->isArtisan()) {
+            return redirect('/artisans')->with('error', 'You must be an artisan to create a listing.');
+        }
+
         $request->validate([
             'name' => 'required|string|max:255',
             'category' => 'required|string',
