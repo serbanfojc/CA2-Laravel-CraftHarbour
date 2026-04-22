@@ -57,11 +57,19 @@ class WorkshopController extends Controller
 
     public function create()
     {
+        if (!auth()->check() || !auth()->user()->isArtisan()) {
+            return redirect('/workshops')->with('error', 'You must be an artisan to create a workshop.');
+        }
+
         return view('workshops.create');
     }
 
     public function store(Request $request)
     {
+        if (!auth()->check() || !auth()->user()->isArtisan()) {
+            return redirect('/workshops')->with('error', 'You must be an artisan to create a workshop.');
+        }
+
         $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'required|string',

@@ -12,6 +12,11 @@ class ReviewController extends Controller
     {
         $artisan = Artisan::findOrFail($artisanId);
 
+        // Prevent artisans from reviewing their own listing
+        if (auth()->user()->artisan && auth()->user()->artisan->id === $artisan->id) {
+            return redirect('/artisans/' . $artisan->id)->with('error', 'You cannot review your own listing.');
+        }
+
         $alreadyReviewed = Review::where('user_id', auth()->id())
                                   ->where('artisan_id', $artisan->id)
                                   ->exists();
@@ -41,8 +46,8 @@ class ReviewController extends Controller
 
     public function edit(Review $review)
     {
-        if (auth()->id() != $review->user_id) {
-            return redirect()->back();
+        if (auth()->id() !== $review->user_id) {
+            abort(403, 'You do not have permission to edit this review.');
         }
 
         return view('reviews.edit', compact('review'));
@@ -50,8 +55,8 @@ class ReviewController extends Controller
 
     public function update(Request $request, Review $review)
     {
-        if (auth()->id() != $review->user_id) {
-            return redirect()->back();
+        if (auth()->id() !== $review->user_id) {
+            abort(403, 'You do not have permission to edit this review.');
         }
 
         $request->validate([
@@ -73,8 +78,8 @@ class ReviewController extends Controller
 
     public function destroy(Review $review)
     {
-        if (auth()->id() != $review->user_id) {
-            return redirect()->back();
+        if (auth()->id() !== $review->user_id && !auth()->user()->isAdmin()) {
+            abort(403, 'You do not have permission to delete this review.');
         }
 
         $artisan = $review->artisan;

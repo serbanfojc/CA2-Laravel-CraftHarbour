@@ -96,7 +96,7 @@
             </div>
 
             @auth
-                @if(!auth()->user()->isArtisan())
+                @if(!auth()->user()->isArtisan() || (auth()->user()->artisan && auth()->user()->artisan->id !== $artisan->id))
                     <div class="card mb-4">
                         <div class="card-body p-4">
                             <h5 class="mb-3">Leave a Review</h5>

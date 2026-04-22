@@ -57,6 +57,15 @@ class ArtisanController extends Controller
     public function show($id)
     {
         $artisan = Artisan::findOrFail($id);
+
+        // Block direct access to unapproved listings unless owner or admin
+        if (!$artisan->is_approved) {
+            $user = auth()->user();
+            if (!$user || ($user->id !== $artisan->user_id && !$user->isAdmin())) {
+                abort(404);
+            }
+        }
+
         return view('artisans.show', compact('artisan'));
     }
 
@@ -87,6 +96,11 @@ class ArtisanController extends Controller
             'cover_image' => 'nullable|image|max:2048',
         ]);
 
+        // Prevent an artisan from creating multiple listings
+        if (auth()->user()->artisan()->exists()) {
+            return redirect('/artisans')->with('error', 'You already have a listing. Edit your existing one.');
+        }
+
         $artisan = new Artisan();
         $artisan->user_id = auth()->id();
         $artisan->name = $request->name;
@@ -112,8 +126,8 @@ class ArtisanController extends Controller
     {
         $artisan = Artisan::findOrFail($id);
 
-        if (auth()->id() !== $artisan->user_id) {
-            return redirect('/artisans')->with('error', 'You do not have permission to edit this listing.');
+        if (auth()->id() !== $artisan->user_id && !auth()->user()->isAdmin()) {
+            abort(403, 'You do not have permission to edit this listing.');
         }
 
         return view('artisans.edit', compact('artisan'));
@@ -123,8 +137,8 @@ class ArtisanController extends Controller
     {
         $artisan = Artisan::findOrFail($id);
 
-        if (auth()->id() !== $artisan->user_id) {
-            return redirect('/artisans')->with('error', 'You do not have permission to edit this listing.');
+        if (auth()->id() !== $artisan->user_id && !auth()->user()->isAdmin()) {
+            abort(403, 'You do not have permission to edit this listing.');
         }
 
         $request->validate([
@@ -162,8 +176,8 @@ class ArtisanController extends Controller
     {
         $artisan = Artisan::findOrFail($id);
 
-        if (auth()->id() !== $artisan->user_id) {
-            return redirect('/artisans')->with('error', 'You do not have permission to delete this listing.');
+        if (auth()->id() !== $artisan->user_id && !auth()->user()->isAdmin()) {
+            abort(403, 'You do not have permission to delete this listing.');
         }
 
         $artisan->delete();

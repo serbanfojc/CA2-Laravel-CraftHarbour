@@ -51,9 +51,8 @@
                         <option value="newest" {{ request('sort') == 'newest' ? 'selected' : '' }}>Newest First</option>
                     </select>
                 </div>
-                <div class="col-md-2 d-flex gap-2">
-                    <button type="submit" class="btn btn-primary w-100">Filter</button>
-                    <a href="/artisans" class="btn btn-outline-primary" title="Clear filters">✕</a>
+                <div class="col-md-2">
+                    <a href="/artisans" class="btn btn-outline-secondary w-100" title="Clear filters">✕ Clear</a>
                 </div>
             </div>
         </form>
@@ -123,5 +122,16 @@
     </div>
     <p class="text-center text-muted small mt-2">Showing {{ $artisans->firstItem() }} to {{ $artisans->lastItem() }} of {{ $artisans->total() }} artisans</p>
 @endif
+
+@push('scripts')
+<script>
+    // Auto-submit the filter form when any dropdown changes
+    document.querySelectorAll('#artisan-filter-form select').forEach(function(select) {
+        select.addEventListener('change', function() {
+            document.getElementById('artisan-filter-form').submit();
+        });
+    });
+</script>
+@endpush
 
 @endsection

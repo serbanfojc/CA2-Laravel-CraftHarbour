@@ -45,7 +45,14 @@ Route::get('/about', function () {
 })->name('about');
 
 Route::resource('artisans', ArtisanController::class);
-Route::resource('workshops', WorkshopController::class);
+
+Route::get('/workshops', [WorkshopController::class, 'index'])->name('workshops.index');
+Route::get('/workshops/create', [WorkshopController::class, 'create'])->middleware('auth')->name('workshops.create');
+Route::post('/workshops', [WorkshopController::class, 'store'])->middleware('auth')->name('workshops.store');
+Route::get('/workshops/{workshop}', [WorkshopController::class, 'show'])->name('workshops.show');
+Route::get('/workshops/{workshop}/edit', [WorkshopController::class, 'edit'])->middleware('auth')->name('workshops.edit');
+Route::put('/workshops/{workshop}', [WorkshopController::class, 'update'])->middleware('auth')->name('workshops.update');
+Route::delete('/workshops/{workshop}', [WorkshopController::class, 'destroy'])->middleware('auth')->name('workshops.destroy');
 
 Route::post('/artisans/{artisan}/reviews', [ReviewController::class, 'store'])->middleware('auth');
 Route::get('/reviews/{review}/edit', [ReviewController::class, 'edit'])->middleware('auth');

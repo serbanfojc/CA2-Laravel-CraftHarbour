@@ -22,8 +22,8 @@
                             <input type="text" name="search" class="form-control form-control-lg"
                                 placeholder="Search artisans..." value="{{ request('search') }}">
                         </div>
-                        <div class="col-md-4">
-                            <select name="category" class="form-select form-select-lg">
+                        <div class="col-md-6">
+                            <select name="category" class="form-select form-select-lg" onchange="this.form.submit()">
                                 <option value="">All Categories</option>
                                 <option value="ceramics" {{ request('category') == 'ceramics' ? 'selected' : '' }}>Ceramics
                                 </option>
@@ -39,10 +39,7 @@
                                 <option value="other" {{ request('category') == 'other' ? 'selected' : '' }}>Other</option>
                             </select>
                         </div>
-                        <div class="col-md-2">
-                            <button type="submit" class="btn btn-light btn-lg w-100"
-                                style="color: #2D5016; font-weight: 600;">Search</button>
-                        </div>
+
                     </div>
                 </form>
             </div>

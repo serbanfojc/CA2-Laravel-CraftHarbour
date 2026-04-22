@@ -7,6 +7,10 @@
     <div class="alert alert-success">{{ session('success') }}</div>
 @endif
 
+@if(session('error'))
+    <div class="alert alert-danger">{{ session('error') }}</div>
+@endif
+
 <h5 class="mb-3">Artisan Listings</h5>
 <div class="card mb-5">
     <div class="card-body p-0 table-responsive">
@@ -104,15 +108,19 @@
                         <td>{{ $user->email }}</td>
                         <td>{{ $user->role }}</td>
                         <td>
-                            <form method="POST" action="/admin/users/{{ $user->id }}/role" class="d-flex gap-2">
-                                @csrf
-                                <select name="role" class="form-select form-select-sm" style="width: auto;">
-                                    <option value="member" {{ $user->role == 'member' ? 'selected' : '' }}>Member</option>
-                                    <option value="artisan" {{ $user->role == 'artisan' ? 'selected' : '' }}>Artisan</option>
-                                    <option value="admin" {{ $user->role == 'admin' ? 'selected' : '' }}>Admin</option>
-                                </select>
-                                <button class="btn btn-sm btn-outline-primary">Update</button>
-                            </form>
+                            @if($user->id === auth()->id())
+                                <span class="text-muted small">Cannot change own role</span>
+                            @else
+                                <form method="POST" action="/admin/users/{{ $user->id }}/role" class="d-flex gap-2">
+                                    @csrf
+                                    <select name="role" class="form-select form-select-sm" style="width: auto;">
+                                        <option value="member" {{ $user->role == 'member' ? 'selected' : '' }}>Member</option>
+                                        <option value="artisan" {{ $user->role == 'artisan' ? 'selected' : '' }}>Artisan</option>
+                                        <option value="admin" {{ $user->role == 'admin' ? 'selected' : '' }}>Admin</option>
+                                    </select>
+                                    <button class="btn btn-sm btn-outline-primary">Update</button>
+                                </form>
+                            @endif
                         </td>
                     </tr>
                 @empty
