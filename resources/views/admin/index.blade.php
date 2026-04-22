@@ -9,7 +9,7 @@
 
 <h5 class="mb-3">Artisan Listings</h5>
 <div class="card mb-5">
-    <div class="card-body p-0">
+    <div class="card-body p-0 table-responsive">
         <table class="table mb-0">
             <thead class="table-light">
                 <tr>
@@ -52,7 +52,7 @@
 
 <h5 class="mb-3">Reviews</h5>
 <div class="card mb-5">
-    <div class="card-body p-0">
+    <div class="card-body p-0 table-responsive">
         <table class="table mb-0">
             <thead class="table-light">
                 <tr>
@@ -87,7 +87,7 @@
 
 <h5 class="mb-3">Users</h5>
 <div class="card mb-4">
-    <div class="card-body p-0">
+    <div class="card-body p-0 table-responsive">
         <table class="table mb-0">
             <thead class="table-light">
                 <tr>
