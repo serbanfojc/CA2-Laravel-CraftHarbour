@@ -195,6 +195,18 @@
                         <div class="card-body p-4">
                             <h5 class="mb-3">Manage Listing</h5>
                             <a href="/artisans/{{ $artisan->id }}/edit" class="btn btn-warning w-100 mb-2">Edit Listing</a>
+
+                            <form method="POST" action="/artisans/{{ $artisan->id }}/availability" class="mb-2">
+                                @csrf
+                                @if($artisan->availability_status === 'open')
+                                    <button class="btn btn-success w-100"
+                                        onclick="return confirm('Mark yourself as Fully Booked?')">✅ Open for Commissions</button>
+                                @else
+                                    <button class="btn btn-danger w-100"
+                                        onclick="return confirm('Mark yourself as Open for Commissions?')">🔴 Fully Booked</button>
+                                @endif
+                                <p class="text-muted small mt-1 mb-0">Click to toggle your status</p>
+                            </form>
                             <form method="POST" action="/artisans/{{ $artisan->id }}">
                                 @csrf
                                 @method('DELETE')

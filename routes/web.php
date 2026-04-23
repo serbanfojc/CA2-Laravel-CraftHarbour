@@ -55,6 +55,7 @@ Route::put('/workshops/{workshop}', [WorkshopController::class, 'update'])->midd
 Route::delete('/workshops/{workshop}', [WorkshopController::class, 'destroy'])->middleware('auth')->name('workshops.destroy');
 
 Route::post('/artisans/{artisan}/reviews', [ReviewController::class, 'store'])->middleware('auth');
+Route::post('/artisans/{artisan}/availability', [ArtisanController::class, 'toggleAvailability'])->middleware('auth')->name('artisans.availability');
 Route::get('/reviews/{review}/edit', [ReviewController::class, 'edit'])->middleware('auth');
 Route::put('/reviews/{review}', [ReviewController::class, 'update'])->middleware('auth');
 Route::delete('/reviews/{review}', [ReviewController::class, 'destroy'])->middleware('auth');

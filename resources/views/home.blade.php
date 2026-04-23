@@ -94,6 +94,11 @@
                     @endif
                     <div class="card-body p-4">
                         <span class="badge bg-secondary mb-2">{{ $artisan->category }}</span>
+                        @if($artisan->availability_status === 'open')
+                            <span class="badge mb-2 ms-1" style="background-color: #28a745;">✅ Open</span>
+                        @else
+                            <span class="badge mb-2 ms-1" style="background-color: #dc3545;">🔴 Booked</span>
+                        @endif
                         <h5 class="card-title">{{ $artisan->name }}</h5>
                         <p class="card-text text-muted small">📍 {{ $artisan->town }}, {{ $artisan->county }}</p>
                         @if($artisan->avg_rating)

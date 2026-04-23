@@ -58,7 +58,6 @@ class ArtisanController extends Controller
     {
         $artisan = Artisan::findOrFail($id);
 
-        // Block direct access to unapproved listings unless owner or admin
         if (!$artisan->is_approved) {
             $user = auth()->user();
             if (!$user || ($user->id !== $artisan->user_id && !$user->isAdmin())) {
@@ -170,6 +169,24 @@ class ArtisanController extends Controller
         $artisan->save();
 
         return redirect('/artisans/' . $artisan->id)->with('success', 'Listing updated successfully!');
+    }
+
+    public function toggleAvailability($id)
+    {
+        $artisan = Artisan::findOrFail($id);
+
+        if (auth()->id() !== $artisan->user_id) {
+            abort(403);
+        }
+
+        $artisan->availability_status = $artisan->availability_status === 'open' ? 'busy' : 'open';
+        $artisan->save();
+
+        $message = $artisan->availability_status === 'open'
+            ? 'Status updated — you are now open for commissions.'
+            : 'Status updated — you are now marked as fully booked.';
+
+        return redirect()->back()->with('success', $message);
     }
 
     public function destroy($id)

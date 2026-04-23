@@ -19,6 +19,7 @@ class Artisan extends Model
         'cover_image',
         'is_approved',
         'avg_rating',
+        'availability_status',
     ];
 
     public function user()
