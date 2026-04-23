@@ -155,6 +155,25 @@
         </div>
 
         <div class="col-md-4">
+
+            {{-- Share This Listing --}}
+            <div class="card mb-4">
+                <div class="card-body p-4">
+                    <h5 class="mb-3">Share This Listing</h5>
+                    <div class="d-flex gap-2">
+                        <button onclick="copyLink()" class="btn btn-outline-secondary w-100" id="copy-btn">
+                            🔗 Copy Link
+                        </button>
+                        <a href="https://wa.me/?text={{ urlencode($artisan->name . ' — Check out this artisan on CraftHarbour: ' . url()->current()) }}"
+                            target="_blank" class="btn w-100"
+                            style="background-color: #25D366; color: white;">
+                            💬 WhatsApp
+                        </a>
+                    </div>
+                    <p class="text-muted small mt-2 mb-0" id="copy-confirm" style="display:none;">✅ Link copied to clipboard!</p>
+                </div>
+            </div>
+
             <div class="card mb-4">
                 <div class="card-body p-4">
                     <h5 class="mb-3">Contact</h5>
@@ -189,4 +208,21 @@
             @endauth
         </div>
     </div>
+@push('scripts')
+<script>
+    function copyLink() {
+        navigator.clipboard.writeText(window.location.href).then(function() {
+            var btn = document.getElementById('copy-btn');
+            var confirm = document.getElementById('copy-confirm');
+            btn.textContent = '✅ Copied!';
+            confirm.style.display = 'block';
+            setTimeout(function() {
+                btn.textContent = '🔗 Copy Link';
+                confirm.style.display = 'none';
+            }, 2500);
+        });
+    }
+</script>
+@endpush
+
 @endsection
