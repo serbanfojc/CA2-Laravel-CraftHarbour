@@ -6,6 +6,7 @@ use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\WorkshopController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\SocialAuthController;
+use App\Http\Controllers\FavouriteController;
 
 Route::get('/', function () {
     $query = \App\Models\Artisan::where('is_approved', true);
@@ -55,6 +56,7 @@ Route::put('/workshops/{workshop}', [WorkshopController::class, 'update'])->midd
 Route::delete('/workshops/{workshop}', [WorkshopController::class, 'destroy'])->middleware('auth')->name('workshops.destroy');
 
 Route::post('/artisans/{artisan}/reviews', [ReviewController::class, 'store'])->middleware('auth');
+Route::post('/artisans/{artisan}/favourite', [FavouriteController::class, 'toggle'])->middleware('auth')->name('artisans.favourite');
 Route::post('/artisans/{artisan}/availability', [ArtisanController::class, 'toggleAvailability'])->middleware('auth')->name('artisans.availability');
 Route::get('/reviews/{review}/edit', [ReviewController::class, 'edit'])->middleware('auth');
 Route::put('/reviews/{review}', [ReviewController::class, 'update'])->middleware('auth');

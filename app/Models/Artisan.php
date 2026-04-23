@@ -36,4 +36,9 @@ class Artisan extends Model
     {
         return $this->hasMany(Workshop::class);
     }
+
+    public function favourites()
+    {
+        return $this->hasMany(Favourite::class);
+    }
 }

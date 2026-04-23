@@ -174,6 +174,28 @@
                 </div>
             </div>
 
+            {{-- Save / Unsave Button --}}
+            @auth
+                @if(!auth()->user()->isArtisan() || (auth()->user()->artisan && auth()->user()->artisan->id !== $artisan->id))
+                    <div class="card mb-4">
+                        <div class="card-body p-4">
+                            <form method="POST" action="/artisans/{{ $artisan->id }}/favourite">
+                                @csrf
+                                @if(auth()->user()->hasFavourited($artisan->id))
+                                    <button class="btn w-100" style="background-color: #2D5016; color: white;">
+                                        ❤️ Saved — Click to Unsave
+                                    </button>
+                                @else
+                                    <button class="btn btn-outline-secondary w-100">
+                                        🤍 Save this Artisan
+                                    </button>
+                                @endif
+                            </form>
+                        </div>
+                    </div>
+                @endif
+            @endauth
+
             <div class="card mb-4">
                 <div class="card-body p-4">
                     <h5 class="mb-3">Contact</h5>

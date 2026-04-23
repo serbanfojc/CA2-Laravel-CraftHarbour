@@ -35,8 +35,67 @@
         <p class="text-muted">You have no listings yet. <a href="/artisans/create">Add one now!</a></p>
     @endforelse
 
+    {{-- Saved Artisans for Artisan role --}}
+    <h5 class="mb-3 mt-4">Your Saved Artisans</h5>
+    @forelse(auth()->user()->favourites as $favourite)
+        <div class="card mb-3">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div class="d-flex align-items-center gap-3">
+                        @if($favourite->artisan->cover_image)
+                            <img src="{{ $favourite->artisan->cover_image }}" style="width: 60px; height: 60px; object-fit: cover; border-radius: 8px;">
+                        @endif
+                        <div>
+                            <h5 class="mb-1">{{ $favourite->artisan->name }}</h5>
+                            <span class="badge bg-secondary">{{ $favourite->artisan->category }}</span>
+                            <p class="text-muted small mb-0 mt-1">📍 {{ $favourite->artisan->town }}, {{ $favourite->artisan->county }}</p>
+                        </div>
+                    </div>
+                    <div class="d-flex gap-2">
+                        <a href="/artisans/{{ $favourite->artisan->id }}" class="btn btn-sm btn-outline-primary">View</a>
+                        <form method="POST" action="/artisans/{{ $favourite->artisan->id }}/favourite">
+                            @csrf
+                            <button class="btn btn-sm btn-outline-danger">Unsave</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @empty
+        <p class="text-muted">You have not saved any artisans yet. <a href="/artisans">Browse artisans!</a></p>
+    @endforelse
+
 @else
-    <h5 class="mb-3">Your Reviews</h5>
+    <h5 class="mb-3">Your Saved Artisans</h5>
+    @forelse(auth()->user()->favourites as $favourite)
+        <div class="card mb-3">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div class="d-flex align-items-center gap-3">
+                        @if($favourite->artisan->cover_image)
+                            <img src="{{ $favourite->artisan->cover_image }}" style="width: 60px; height: 60px; object-fit: cover; border-radius: 8px;">
+                        @endif
+                        <div>
+                            <h5 class="mb-1">{{ $favourite->artisan->name }}</h5>
+                            <span class="badge bg-secondary">{{ $favourite->artisan->category }}</span>
+                            <p class="text-muted small mb-0 mt-1">📍 {{ $favourite->artisan->town }}, {{ $favourite->artisan->county }}</p>
+                        </div>
+                    </div>
+                    <div class="d-flex gap-2">
+                        <a href="/artisans/{{ $favourite->artisan->id }}" class="btn btn-sm btn-outline-primary">View</a>
+                        <form method="POST" action="/artisans/{{ $favourite->artisan->id }}/favourite">
+                            @csrf
+                            <button class="btn btn-sm btn-outline-danger">Unsave</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @empty
+        <p class="text-muted">You have not saved any artisans yet. <a href="/artisans">Browse artisans!</a></p>
+    @endforelse
+
+    <h5 class="mb-3 mt-4">Your Reviews</h5>
     @forelse(auth()->user()->reviews as $review)
         <div class="card mb-3">
             <div class="card-body">
